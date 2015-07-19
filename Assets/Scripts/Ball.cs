@@ -3,21 +3,19 @@ using System.Collections;
 
 public class Ball : MonoBehaviour {
 
-	public Vector3 velocity;
-
+	private Rigidbody rigidBody;
 	private AudioSource audioSource;
 
 	void Start () {
+		rigidBody = GetComponent<Rigidbody>();
+		rigidBody.useGravity = false;
 		audioSource = GetComponent<AudioSource>();
-		Launch();
 	}
 
-	void Update () {
-	
-	}
+	public void Launch (Vector3 velocity) {
+		rigidBody.useGravity = true;
+		rigidBody.velocity = velocity;
 
-	public void Launch () {
-		GetComponent<Rigidbody>().velocity = velocity;
 		audioSource.Play();
 	}
 }
