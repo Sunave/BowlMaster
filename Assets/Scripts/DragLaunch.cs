@@ -4,6 +4,8 @@ using System.Collections;
 [RequireComponent (typeof (Ball))]
 public class DragLaunch : MonoBehaviour {
 
+	public float clampBallNudge = 40f;
+
 	private Ball ball;
 	private float dragStartTime;
 	private Vector3 dragStartPosition;
@@ -30,6 +32,13 @@ public class DragLaunch : MonoBehaviour {
 		Vector3 launchVelocity = new Vector3 (launchSpeedX, 0f, launchSpeedZ);
 
 		ball.Launch(launchVelocity);
+	}
+
+	public void MoveStart (float xNudge) {
+		if (!ball.isMoving) {
+			float newX = Mathf.Clamp(ball.transform.position.x + xNudge, -clampBallNudge, clampBallNudge);
+			ball.transform.position = new Vector3 (newX, ball.transform.position.y, ball.transform.position.z);
+		}
 	}
 	
 }
