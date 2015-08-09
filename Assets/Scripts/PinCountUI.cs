@@ -13,9 +13,16 @@ public class PinCountUI : MonoBehaviour {
 	}
 
 	void Update () {
-		if (setter.ballEnteredBox) {
-			text.color = Color.red;
-			text.text = setter.CountStanding().ToString();
-		}
+		if (setter.ballEnteredBox) StartCounter();
+		if (setter.pinsHaveSettled) SettleCounter();
+	}
+
+	void StartCounter () {
+		text.color = Color.red;
+		text.text = setter.CountStanding().ToString();
+	}
+
+	void SettleCounter () {
+		text.color = Color.green;
 	}
 }
