@@ -17,8 +17,13 @@ public class PinSetter : MonoBehaviour {
 	}
 
 	void Update () {
-		if (ballEnteredBox) CheckStandingCount();
+		if (ballEnteredBox) UpdateStandingPinCountAndSettle();
 	}
+
+
+
+	// PIN HANDLING AND COUNTING RELATED TO BALL MOVEMENT
+	// **************************************************
 
 	public int CountStanding() {
 		int count = 0;
@@ -28,16 +33,14 @@ public class PinSetter : MonoBehaviour {
 		return count;
 	}
 
-	void CheckStandingCount () {
+	void UpdateStandingPinCountAndSettle () {
 		int currentStanding = CountStanding();
 		if (currentStanding != lastStandingCount) {
 			lastChangeTime = Time.time;
 			lastStandingCount = currentStanding;
 			return;
 		}
-
 		float settleTime = 3f; // How long to wait to consider pins settled
-
 		if ((Time.time - lastChangeTime) > settleTime) {
 			SettlePins();
 		}
@@ -50,15 +53,10 @@ public class PinSetter : MonoBehaviour {
 		lastStandingCount = -1;
 	}
 
-	void OnTriggerEnter (Collider collider) {
-		if (collider.gameObject.GetComponent<Ball>()) ballEnteredBox = true;
-	}
 
-	void OnTriggerExit (Collider collider) {
-		if (collider.gameObject.GetComponentInParent<Pin>()) {
-			Destroy (collider.transform.parent.gameObject);
-		}
-	}
+
+	// PIN MOVEMENT & CONTROL
+	// **********************
 
 	void RaisePins () {
 		foreach (Pin pin in GameObject.FindObjectsOfType<Pin>()) {
@@ -75,6 +73,15 @@ public class PinSetter : MonoBehaviour {
 	void RenewPins () {
 		GameObject newPins = Instantiate (pinSet);
 		newPins.transform.Translate (Vector3.up * 20);
+	}
+
+
+
+	// TRIGGER HANDLING
+	// ****************
+	
+	void OnTriggerEnter (Collider collider) {
+		if (collider.gameObject.GetComponent<Ball>()) ballEnteredBox = true;
 	}
 	
 }

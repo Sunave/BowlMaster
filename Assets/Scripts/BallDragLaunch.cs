@@ -2,7 +2,7 @@
 using System.Collections;
 
 [RequireComponent (typeof (Ball))]
-public class DragLaunch : MonoBehaviour {
+public class BallDragLaunch : MonoBehaviour {
 
 	public float clampBallNudge = 40f;
 

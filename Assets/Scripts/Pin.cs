@@ -18,7 +18,7 @@ public class Pin : MonoBehaviour {
 
 	public void LowerIfStanding (float distance) {
 		if (IsStanding()) {
-			GetComponent<Rigidbody>().useGravity = false;
+			GetComponent<Rigidbody>().useGravity = true;
 			transform.Translate (Vector3.down * distance, Space.World);
 		}
 	}
