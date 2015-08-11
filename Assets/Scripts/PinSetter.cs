@@ -6,6 +6,7 @@ public class PinSetter : MonoBehaviour {
 	public int lastStandingCount = -1;
 	public bool ballEnteredBox = false;
 	public bool pinsHaveSettled = false;
+	public float distanceToRaise = 40f;
 
 	private float lastChangeTime;
 	private Ball ball;
@@ -57,4 +58,21 @@ public class PinSetter : MonoBehaviour {
 			Destroy (collider.transform.parent.gameObject);
 		}
 	}
+
+	void RaisePins () {
+		foreach (Pin pin in GameObject.FindObjectsOfType<Pin>()) {
+			pin.RaiseIfStanding(distanceToRaise);
+		}
+	}
+
+	void LowerPins () {
+		foreach (Pin pin in GameObject.FindObjectsOfType<Pin>()) {
+			pin.LowerIfStanding(distanceToRaise);
+		}
+	}
+
+	void RenewPins () {
+		Debug.Log ("Renew Pins");
+	}
+	
 }
