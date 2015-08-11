@@ -7,6 +7,7 @@ public class PinSetter : MonoBehaviour {
 	public bool ballEnteredBox = false;
 	public bool pinsHaveSettled = false;
 	public float distanceToRaise = 40f;
+	public GameObject pinSet;
 
 	private float lastChangeTime;
 	private Ball ball;
@@ -72,7 +73,8 @@ public class PinSetter : MonoBehaviour {
 	}
 
 	void RenewPins () {
-		Debug.Log ("Renew Pins");
+		GameObject newPins = Instantiate (pinSet);
+		newPins.transform.Translate (Vector3.up * 20);
 	}
 	
 }
