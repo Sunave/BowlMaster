@@ -72,12 +72,12 @@ public class PinSetter : MonoBehaviour {
 	}
 
 	void HandleBowl () {
-		ActionMaster.NextAction action = actionMaster.Bowl(CountScore());
-		if (action == ActionMaster.NextAction.Tidy) {
+		ActionMaster.ActionState action = actionMaster.Bowl(CountScore());
+		if (action == ActionMaster.ActionState.Tidy) {
 			animator.SetTrigger ("tidyTrigger");
-		} else if (action == ActionMaster.NextAction.EndTurn || action == ActionMaster.NextAction.Reset) {
+		} else if (action == ActionMaster.ActionState.EndTurn || action == ActionMaster.ActionState.Reset) {
 			animator.SetTrigger ("resetTrigger");
-		} else if (action == ActionMaster.NextAction.EndGame) { 
+		} else if (action == ActionMaster.ActionState.EndGame) { 
 			throw new UnityException ("Don't know how to handle end game, please implement this feature.");
 		}
 	}
