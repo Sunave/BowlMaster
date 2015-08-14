@@ -11,9 +11,14 @@ public class PinSetter : MonoBehaviour {
 
 	private float lastChangeTime;
 	private Ball ball;
+	private Animator animator;
+	private ActionMaster actionMaster;
+	private int pinsLeft = 10;
 
 	void Start () {
 		ball = GameObject.FindObjectOfType<Ball>();
+		animator = GetComponent<Animator>();
+		actionMaster = new ActionMaster();
 	}
 
 	void Update () {
@@ -33,6 +38,13 @@ public class PinSetter : MonoBehaviour {
 		return count;
 	}
 
+	public int CountScore() {
+		int standing = CountStanding();
+		int score = pinsLeft - standing;
+		pinsLeft = standing;
+		return score;
+	}
+
 	void UpdateStandingPinCountAndSettle () {
 		int currentStanding = CountStanding();
 		if (currentStanding != lastStandingCount) {
@@ -43,6 +55,7 @@ public class PinSetter : MonoBehaviour {
 		float settleTime = 3f; // How long to wait to consider pins settled
 		if ((Time.time - lastChangeTime) > settleTime) {
 			SettlePins();
+			HandleBowl();
 		}
 	}
 
@@ -51,6 +64,17 @@ public class PinSetter : MonoBehaviour {
 		pinsHaveSettled = true;
 		ballEnteredBox = false;
 		lastStandingCount = -1;
+	}
+
+	void HandleBowl () {
+		ActionMaster.NextAction action = actionMaster.Bowl(CountScore());
+		if (action == ActionMaster.NextAction.Tidy) {
+			animator.SetTrigger ("tidyTrigger");
+		} else if (action == ActionMaster.NextAction.EndTurn || action == ActionMaster.NextAction.Reset) {
+			animator.SetTrigger ("resetTrigger");
+		} else if (action == ActionMaster.NextAction.EndGame) { 
+			throw new UnityException ("Don't know how to handle end game, please implement this feature.");
+		}
 	}
 
 
@@ -71,6 +95,7 @@ public class PinSetter : MonoBehaviour {
 	}
 
 	void RenewPins () {
+		pinsLeft = 10;
 		GameObject newPins = Instantiate (pinSet);
 		newPins.transform.Translate (Vector3.up * 20);
 	}
