@@ -93,6 +93,29 @@ public class ActionMasterTest {
 		Assert.AreEqual (tidy, actionMaster.Bowl(0));
 	}
 
+	[Test]
+	public void T12BowlZeroTenFiveReturnsTidy () {
+		actionMaster.Bowl(0);
+		actionMaster.Bowl(10);
+		Assert.AreEqual(tidy, actionMaster.Bowl(5));
+	}
+
+	[Test]
+	public void T13BowlZeroTenFiveOneReturnsEndTurn () {
+		actionMaster.Bowl(0);
+		actionMaster.Bowl(10);
+		actionMaster.Bowl(5);
+		Assert.AreEqual(endTurn, actionMaster.Bowl(1));
+	}
+
+	[Test]
+	public void T14ThreeStrikesAtLastFramesEndsGame () {
+		RollMany(1, 18);
+		Assert.AreEqual (reset, actionMaster.Bowl (10));
+		Assert.AreEqual (reset, actionMaster.Bowl (10));
+		Assert.AreEqual (endGame, actionMaster.Bowl (10));
+	}
+
 
 
 	private void RollMany(int pinAmount, int amountOfRolls) {

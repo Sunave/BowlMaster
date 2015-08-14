@@ -15,6 +15,7 @@ public class ActionMaster {
 
 		if (bowl == 21) return NextAction.EndGame;
 
+		// Last frame special cases
 		if (bowl >= 19 && Bowl21Awarded()) {
 			bowl++;
 			if (bowls[19-1] == 10 && pins < 10) return NextAction.Tidy;
@@ -23,15 +24,17 @@ public class ActionMaster {
 			return NextAction.EndGame;
 		}
 
-		if (pins == 10) {
-			bowl += 2;
-			return NextAction.EndTurn;
-		}
 
-		if (bowl % 2 != 0) { // Mid frame, or last frame
-			bowl++;
-			return NextAction.Tidy;
-		} else if (bowl % 2 == 0) { // End of frame
+		// Regular frames
+		if (bowl % 2 != 0) { // First bowl of frames
+			if (pins == 10) {
+				bowl += 2;
+				return NextAction.EndTurn;
+			} else {
+				bowl++;
+				return NextAction.Tidy;
+			}
+		} else if (bowl % 2 == 0) { // Second bowl of frames
 			bowl++;
 			return NextAction.EndTurn;
 		}
