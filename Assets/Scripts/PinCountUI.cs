@@ -14,7 +14,7 @@ public class PinCountUI : MonoBehaviour {
 
 	void Update () {
 		text.text = setter.CountStanding().ToString();
-		if (setter.ballEnteredBox) text.color = Color.red;
-		if (setter.pinsHaveSettled) text.color = Color.green;
+		if (setter.ballOutOfPlay) text.color = Color.red;
+		else if (setter.pinsHaveSettled) text.color = Color.green;
 	}
 }

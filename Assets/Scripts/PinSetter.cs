@@ -3,26 +3,31 @@ using System.Collections;
 
 public class PinSetter : MonoBehaviour {
 
-	public int lastStandingCount = -1;
-	public bool ballEnteredBox = false;
-	public bool pinsHaveSettled = false;
 	public float distanceToRaise = 40f;
 	public GameObject pinSet;
 
+	public bool ballOutOfPlay {get; set;}
+	public bool pinsHaveSettled {get; set;}
+
+	private int lastStandingCount = -1;
 	private float lastChangeTime;
+	private int pinsLeft = 10;
+
 	private Ball ball;
 	private Animator animator;
 	private ActionMaster actionMaster;
-	private int pinsLeft = 10;
 
 	void Start () {
 		ball = GameObject.FindObjectOfType<Ball>();
 		animator = GetComponent<Animator>();
 		actionMaster = new ActionMaster();
+
+		ballOutOfPlay = false;
+		pinsHaveSettled = false;
 	}
 
 	void Update () {
-		if (ballEnteredBox) UpdateStandingPinCountAndSettle();
+		if (ballOutOfPlay) UpdateStandingPinCountAndSettle();
 	}
 
 
@@ -62,7 +67,7 @@ public class PinSetter : MonoBehaviour {
 	void SettlePins () {
 		ball.Reset();
 		pinsHaveSettled = true;
-		ballEnteredBox = false;
+		ballOutOfPlay = false;
 		lastStandingCount = -1;
 	}
 
@@ -98,15 +103,6 @@ public class PinSetter : MonoBehaviour {
 		pinsLeft = 10;
 		GameObject newPins = Instantiate (pinSet);
 		newPins.transform.Translate (Vector3.up * 20);
-	}
-
-
-
-	// TRIGGER HANDLING
-	// ****************
-	
-	void OnTriggerEnter (Collider collider) {
-		if (collider.gameObject.GetComponent<Ball>()) ballEnteredBox = true;
 	}
 	
 }
